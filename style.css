@@ -1,5 +1,9 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  width: 600px;
+  width: 500px;
   margin: auto;
   padding: 20px;
 }
@@ -16,4 +20,9 @@ body {
 
 .completed {
   text-decoration: line-through;
+}
+#taskInput {
+  width: 100%;
+  font-size: 20px;
+  padding: 10px;
 }
