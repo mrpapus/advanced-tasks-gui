@@ -57,17 +57,16 @@ function initTasks() {
 }
 
 function displayTasks() {
-  let outputStr = "";
+  tasksEl.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
-    outputStr += getTaskHTMLStr(tasks[i], i);
+    tasksEl.appendChild(getTaskHTML(tasks[i], i));
   }
-  tasksEl.innerHTML = outputStr;
 }
 
 function newTask(taskDescription) {
   return {
     description: taskDescription,
-    completed: "",
+    completed: false,
   };
 }
 
@@ -75,10 +74,38 @@ function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function getTaskHTMLStr(task, index) {
-  return `
-    <div class="${task.completed}">
-      ${index}: ${task.description}
-    </div>
-  `;
+function getTaskHTML(task, index) {
+  //javascript
+
+  // check box element
+  let checkboxEl = document.createElement("input");
+  checkboxEl.type = "checkbox";
+  checkboxEl.checked = task.completed;
+  checkboxEl.addEventListener("input", checkBoxHandler);
+  //task description text node
+  let textEl = document.createTextNode(task.description);
+  // remove button
+  let buttonEl = document.createElement("button");
+  buttonEl.innerHTML = "remove";
+  buttonEl.dataset.index = index;
+  buttonEl.addEventListener("click", removeBtnHandler);
+  // add everything to div element
+  let divEl = document.createElement("div");
+  divEl.appendChild(checkboxEl);
+  divEl.appendChild(textEl);
+  divEl.appendChild(buttonEl);
+
+  return divEl;
+}
+
+//event functions
+function checkBoxHandler(e) {
+  console.log(e.target);
+}
+
+function removeBtnHandler(e) {
+  let taskIndex = +e.target.dataset.index;
+  tasks.splice(taskIndex, 1);
+  saveTasks();
+  displayTasks();
 }
